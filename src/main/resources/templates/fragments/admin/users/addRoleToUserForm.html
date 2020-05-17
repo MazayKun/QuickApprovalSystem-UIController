@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="roleFormForUser">
+<form th:if="${not #lists.isEmpty(listroles)}" th:action="@{addUserRole}" th:object="${role}" method="post">
+    <div class="border-bottom">
+        <h3 th:text="'Добавить роль пользователю '+ ${user.login}"></h3>
+    </div>
+    <br>
+    <div class="my-2">
+    <label for="role">Роль</label>
+    <select name="role" class="form-control" id="role" th:field="*{idRole}">
+        <th:block th:each="role : ${listroles}">
+            <option th:value="${role.idRole}" th:text="${role.name}"></option>
+        </th:block>
+    </select>
+        <input type="hidden" th:id="user_id" th:value="${user_id}" th:name="user_id">
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Добавить</button>
+    <div class="my-4"></div>
+    <!--button type="button" class="btn btn-primary">Отмена</button-->
+</form>
+<div th:unless="${not #lists.isEmpty(listroles)}">
+<h4>
+    В данный момент не существует никаких ролей, которые можно добавить. <br>
+    <small class="text-muted" th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+        Вы можете создать новую роль.</small>
+</h4>
+<a class="btn btn-outline-primary mt-3 mb-3" th:if="${#authorization.expression('hasAuthority(''admin'')')}"
+   role="button" aria-pressed="true" th:href="@{/admin/addRoleForm}">
+    Создать новую роль </a>
+</div>
+</body>
+</html>

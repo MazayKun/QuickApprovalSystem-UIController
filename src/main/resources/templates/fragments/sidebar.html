@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid" th:fragment="sidebar">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="/home"
+                           th:classappend="${#httpServletRequest.getRequestURI() == '/home' ? 'nav-link active':'nav-link'}">
+                            <span data-feather="home"></span>
+                            Главная <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                                class="nav-link" href="#"
+                                data-toggle="collapse" data-target="#collapseOrders" aria-expanded="false"
+                                aria-controls="collapseOrders"
+                        >
+                            <span data-feather="clipboard"></span>
+                            Процессы
+                        </a>
+                    </li>
+                    <div th:classappend="${(menu == 'process' ? 'collapse show':'collapse')}" id="collapseOrders">
+                        <div class="ml-4 mr-2 my-2 expanded-list">
+                            <li class="nav-item">
+                                <a href="/processForm"
+                                   th:classappend="${active == 'processForm' ? 'nav-link active':'nav-link'}">
+                                    <span data-feather="edit-3"></span>
+                                    Добавить процесс
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/showMyProcesses"
+                                   th:classappend="${active == 'showMyProcesses' ? 'nav-link active':'nav-link'}">
+                                    <span data-feather="file-text"></span>
+                                    Cписок моих процессов
+                                </a>
+                            </li>
+                        </div>
+                    </div>
+
+                    <li class="nav-item">
+                        <a
+                                class="nav-link" href="#"
+                                data-toggle="collapse" data-target="#collapseOrders5" aria-expanded="false"
+                                aria-controls="collapseOrders5"
+                        >
+                            <span data-feather="users"></span>
+                            Пользователи
+                        </a>
+                    </li>
+                    <div th:classappend="${(menu == 'users' ? 'collapse show':'collapse')}" id="collapseOrders5">
+                        <div class="ml-4 mr-2 my-2 expanded-list">
+                            <li class="nav-item">
+                                <a href="/allusers" th:classappend="${active == 'allusers' ? 'nav-link active':'nav-link'}">
+                                    <span data-feather="file-text"></span>
+                                    Список пользователей
+                                </a>
+                            </li>
+                        </div>
+                    </div>
+
+
+                    <li class="nav-item">
+                        <a
+                                class="nav-link" href="#"
+                                data-toggle="collapse" data-target="#collapseOrders2" aria-expanded="false"
+                                aria-controls="collapseOrders2"
+                        >
+                            <span data-feather="github"></span>
+                            Роли
+                        </a>
+                    </li>
+                    <div th:classappend="${(menu == 'role' ? 'collapse show':'collapse')}" id="collapseOrders2">
+                        <div class="ml-4 mr-2 my-2 expanded-list">
+                            <li class="nav-item">
+                                <a href="/admin/addRoleForm"
+                                   th:classappend="${active == 'addRoleForm' ? 'nav-link active':'nav-link'}"
+                                   th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+                                    <span data-feather="edit-2"></span>
+                                    Добавить роль
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/roles"
+                                   th:classappend="${active == 'roles' ? 'nav-link active':'nav-link'}">
+                                    <span data-feather="file-text"></span>
+                                    Список ролей
+                                </a>
+                            </li>
+                        </div>
+                    </div>
+
+                    <li class="nav-item">
+                        <a
+                                class="nav-link" href="#"
+                                data-toggle="collapse" data-target="#collapseOrders3" aria-expanded="false"
+                                aria-controls="collapseOrders3"
+                        >
+                            <span data-feather="book"></span>
+                            Типы процессов
+                        </a>
+                    </li>
+                    <div th:classappend="${(menu == 'processType' ? 'collapse show':'collapse')}" id="collapseOrders3">
+                        <div class="ml-4 mr-2 my-2 expanded-list">
+                            <li class="nav-item">
+                                <a href="/admin/getProcessTypeForm"
+                                   th:classappend="${active == 'getProcessTypeForm' ? 'nav-link active':'nav-link'}"
+                                   th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+                                    <span data-feather="bookmark"></span>
+                                    Добавить тип процесса
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/getAllProcessTypes"
+                                   th:classappend="${active == 'getAllProcessTypes' ? 'nav-link active':'nav-link'}">
+                                        <span data-feather="book-open"></span>
+                                    Список типов процессов
+                                </a>
+                            </li>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

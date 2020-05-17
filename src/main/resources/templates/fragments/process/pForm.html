@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="pForm">
+        <form th:if="${not #lists.isEmpty(ptl)}" th:action="@{/addProcess}" th:object="${process}" method="post">
+            <div class="border-bottom">
+                <h3>Добавить новый процесс</h3>
+            </div>
+            <br>
+            <div class="my-2">
+                <label for="processtype">Тип процесса</label>
+                <select name="processtype" class="form-control" id="processtype" th:field="*{process_type_id}">
+                    <th:block th:each="ptype : ${ptl}">
+                        <option th:value="${ptype.idProcessType}" th:text="${ptype.name}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="my-2">
+                <label for="name">Имя документа</label>
+                <input type="text" th:field="*{name}" class="form-control" id="name" pattern="^[А-Яа-яЁё0-9\s]+$" maxlength="100" required/>
+            </div>
+            <div class="my-2">
+                <label for="description">Описание документа</label>
+                <input type="text" th:field="*{description}" class="form-control" id="description" pattern="^[А-Яа-яЁё0-9\s]+$" maxlength="300" required/>
+            </div>
+            <div class="my-2">
+                <label for="datetime">Дата</label>
+                <input id="datetime" type="datetime-local" name="datefield" th:field="*{{temp_date_end_planning}}"
+
+                       class="form-control" required/>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+            <div class="my-4"></div>
+            <!--button type="button" class="btn btn-primary">Отмена</button-->
+        </form>
+        <div th:unless="${not #lists.isEmpty(ptl)}">
+            <h4>
+                В данный момент не существует типов процессов,<br>
+                либо типов процессов с этапами,<br>
+                поэтому, вы не сможете создать процесс. <br>
+                <small class="text-muted" th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+                    Вам необходимо создать все условия для создания процесса.</small>
+            </h4>
+            <a class="btn btn-outline-primary mt-3 mb-3" th:if="${#authorization.expression('hasAuthority(''admin'')')}"
+               role="button" aria-pressed="true" th:href="@{/admin/getProcessTypeForm}">
+                Создать новый тип процесса</a>
+        </div>
+<script type="application/javascript">
+    function dateToISOLikeButLocal(date) {
+        const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+        const msLocal =  date.getTime() - offsetMs;
+        const dateLocal = new Date(msLocal);
+        const iso = dateLocal.toISOString();
+        const isoLocal = iso.slice(0, 19);
+        return isoLocal;
+    }
+        elem = document.getElementById("datetime")
+        var iso = new Date();
+    iso.setHours(iso.getHours() + 12);
+    iso = dateToISOLikeButLocal(iso);
+        elem.value = iso
+        elem.min = iso
+</script>
+</body>
+</html>
